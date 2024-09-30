@@ -1,0 +1,25 @@
+repos:
+-   repo: local
+    hooks:
+    - id: rye-lint
+      name: rye-lint
+      description: "Lint Python via 'rye lint'"
+      entry: rye lint --fix
+      language: system
+      types_or: [python, pyi]
+      require_serial: true
+    - id: rye-format
+      name: rye-format
+      description: "Format Python via 'rye fmt'"
+      entry: rye fmt
+      language: system
+      types_or: [python, pyi]
+      require_serial: true
+    - id: rye-test
+      name: rye-test
+      description: "Test Python via 'rye test'"
+      entry: rye test
+      language: system
+      types_or: [python, pyi]
+      pass_filenames: false
+      require_serial: true
