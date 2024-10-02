@@ -55,8 +55,6 @@ eventSource.addEventListener('MyMessage', (event) => {
 });
 ```
 
-```python
-
 ## Development
 
 FastAPI-SSE uses Rye for dependency management and the development workflow. To get started with development, ensure you have [Rye](https://github.com/astral-sh/rye) installed and then clone the repository and set up the environment:
