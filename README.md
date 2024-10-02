@@ -1,5 +1,9 @@
 # FastAPI-SSE
 
+![PyPI - Downloads](https://img.shields.io/pypi/dd/fastapi-sse)
+![PyPI - Version](https://img.shields.io/pypi/v/fastapi-sse)
+[![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye.astral.sh)
+
 *A tiny library for sending Server-Sent Events (SSE) in FastAPI*
 
 Server-Sent Events (SSE) provide a way to stream real-time updates from the server to the client over HTTP. This library allows sending Pydantic models as SSE events in FastAPI, formatted as JSON.
@@ -38,7 +42,7 @@ eventSource.onmessage = (event) => {
 Install the library using pip:
 
 ```
-pip install git+https://github.com/MatthewScholefield/fastapi-sse.git
+pip install fastapi-sse
 ```
 
 ## Typed Events
