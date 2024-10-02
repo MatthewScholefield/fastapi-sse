@@ -1,7 +1,7 @@
 [project]
 name = "fastapi-sse"
-version = "0.1.0"
-description = "A simple library for sending Server-Sent Events (SSE) in FastAPI"
+version = "1.0.0"
+description = "A tiny library for sending Server-Sent Events (SSE) in FastAPI"
 authors = [
     { name = "Matthew D. Scholefield", email = "matthew331199@gmail.com" },
 ]
