@@ -1,9 +1,10 @@
 import asyncio
 from typing import AsyncGenerator, Any, List
 
+from fastapi.exceptions import HTTPException
 import pytest
 from fastapi import FastAPI
-from fastapi_sse import sse_response, typed_sse_response
+from fastapi_sse import sse_handler, typed_sse_handler
 from pydantic import BaseModel
 from async_asgi_testclient import TestClient
 
@@ -21,13 +22,29 @@ async def emit_my_events() -> AsyncGenerator[MyEvent, Any]:
 
 
 @app.get('/test-stream')
+@sse_handler()
 async def my_events_handler():
-    return sse_response(emit_my_events())
+    for i in range(3):
+        await asyncio.sleep(0.1)
+        yield MyEvent(message=f'Test message {i}')
 
 
 @app.get('/test-stream-typed')
+@typed_sse_handler()
 async def my_events_handler_typed():
-    return typed_sse_response(emit_my_events())
+    for i in range(3):
+        await asyncio.sleep(0.1)
+        yield MyEvent(message=f'Test message {i}')
+
+
+@app.get('/test-stream-erroring')
+@sse_handler()
+async def my_events_handler_erroring():
+    raise HTTPException(status_code=404, detail='Example stream not found error')
+
+    for i in range(3):
+        await asyncio.sleep(0.1)
+        yield MyEvent(message=f'Test message {i}')
 
 
 @pytest.mark.asyncio
@@ -52,6 +69,14 @@ async def test_typed_sse_response():
         assert events[0] == dict(data='{"message":"Test message 0"}', event='MyEvent')
         assert events[1] == dict(data='{"message":"Test message 1"}', event='MyEvent')
         assert events[2] == dict(data='{"message":"Test message 2"}', event='MyEvent')
+
+
+@pytest.mark.asyncio
+async def test_sse_response_erroring():
+    async with TestClient(app) as client:
+        response = await client.get('/test-stream-erroring')
+        assert response.status_code == 404
+        assert response.json() == {'detail': 'Example stream not found error'}
 
 
 async def collect_events_data(response) -> List[dict]:
