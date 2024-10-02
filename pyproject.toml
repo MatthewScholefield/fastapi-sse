@@ -1,13 +1,13 @@
 [project]
 name = "fastapi-sse"
-version = "1.0.0"
+version = "1.0.1"
 description = "A tiny library for sending Server-Sent Events (SSE) in FastAPI"
 authors = [
     { name = "Matthew D. Scholefield", email = "matthew331199@gmail.com" },
 ]
-dependencies = ["fastapi>=0.115.0"]
+dependencies = ["fastapi>=0.51.0"]
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">= 3.9"
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 3 - Alpha",
