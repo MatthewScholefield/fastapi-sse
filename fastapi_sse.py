@@ -1,11 +1,12 @@
 from functools import wraps
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from typing import AsyncGenerator, Awaitable, Callable
+from typing import AsyncGenerator, Awaitable, Callable, ParamSpec
 
 
-EventGeneratorFunc = Callable[[], AsyncGenerator[BaseModel, None]]
-StreamingResponseFunc = Callable[[], Awaitable[StreamingResponse]]
+P = ParamSpec('P')
+EventGeneratorFunc = Callable[P, AsyncGenerator[BaseModel, None]]
+StreamingResponseFunc = Callable[P, Awaitable[StreamingResponse]]
 
 
 def sse_handler(
@@ -32,7 +33,9 @@ def sse_handler(
 
     def decorator(generator_func: EventGeneratorFunc) -> StreamingResponseFunc:
         @wraps(generator_func)
-        async def streaming_handler(*args, **kwargs) -> StreamingResponse:
+        async def streaming_handler(
+            *args: P.args, **kwargs: P.kwargs
+        ) -> StreamingResponse:
             generator_iterator = aiter(generator_func(*args, **kwargs))
             try:
                 first_event = await anext(generator_iterator)
