@@ -1,7 +1,7 @@
 # FastAPI-SSE
 
-![PyPI - Downloads](https://img.shields.io/pypi/dd/fastapi-sse)
-![PyPI - Version](https://img.shields.io/pypi/v/fastapi-sse)
+[![PyPI - Downloads](https://img.shields.io/pypi/dd/fastapi-sse)](https://pypi.org/project/fastapi-sse/)
+[![PyPI - Version](https://img.shields.io/pypi/v/fastapi-sse)](https://pypi.org/project/fastapi-sse/)
 [![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye.astral.sh)
 
 *A tiny library for sending Server-Sent Events (SSE) in FastAPI*
