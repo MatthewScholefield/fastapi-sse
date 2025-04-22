@@ -1,5 +1,5 @@
 from functools import wraps
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 from pydantic import BaseModel
 from typing import AsyncGenerator, Awaitable, Callable, ParamSpec
 
@@ -54,7 +54,7 @@ def sse_handler(
                 async for event in generator_iterator:
                     yield event
 
-            return sse_response(rewrapped_generator(), emit_type)
+            return sse_response(rewrapped_generator(), emit_type, kwargs["response"])
 
         return streaming_handler
 
@@ -67,7 +67,9 @@ def typed_sse_handler() -> Callable[[EventGeneratorFunc], StreamingResponseFunc]
 
 
 def sse_response(
-    generator: AsyncGenerator[BaseModel, None], emit_type: bool = False
+    generator: AsyncGenerator[BaseModel, None],
+    emit_type: bool = False,
+    response: Response = None
 ) -> StreamingResponse:
     """
     Creates a StreamingResponse that formats each Pydantic model emitted by the
@@ -94,7 +96,11 @@ def sse_response(
     return StreamingResponse(
         event_source_wrapper(),
         media_type='text/event-stream',
-        headers={'Cache-Control': 'no-cache', 'Connection': 'keep-alive'},
+        headers={
+            **(response.headers if response else {}),
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        },
     )
 
 
