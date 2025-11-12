@@ -87,7 +87,7 @@ def sse_response(
             message = ''
             if emit_type:
                 message += f'event: {event.__class__.__name__}\r\n'
-            message += f'data: {event.model_dump_json()}\r\n'
+            message += f'data: {event.model_dump_json(exclude_none=True)}\r\n'
             message += '\r\n'
             yield message.encode('utf-8')
 
